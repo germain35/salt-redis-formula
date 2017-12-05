@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{## start with defaults from defaults.yaml ##}
+{% import_yaml "redis/defaults.yaml" as defaults %}
+
+{% set os_map = salt['grains.filter_by']({
+    'Debian': {
+        'pkg': 'redis-server',
+        'service': 'redis-server',
+        'config_file': '/etc/redis/redis.conf',
+        'config_version': salt['grains.filter_by']({
+            'jessie': '2.8',
+            'xenial': '3.0',
+            'stretch': '3.2',
+            'default': '2.8'
+        }, grain='oscodename'),
+        'log_file': '/var/log/redis/redis-server.log',
+        'pid_file': '/var/run/redis/redis-server.pid'
+    },
+    'RedHat': {
+        'pkg': 'redis',
+        'service': 'redis',
+        'config_file': '/etc/redis.conf',
+        'config_version': salt['grains.filter_by']({
+            'CentOS-6': '3.0',
+            'CentOS Linux-7': '3.2',
+            'default': '3.0'
+        }, grain='osfinger'),
+        'log_file': '/var/log/redis/redis.log',
+        'pid_file': '/var/run/redis.pid'
+    }, 
+}, grain='os_family', merge=salt['pillar.get']('redis:lookup'), default='Debian') %}
+
+# Merge os_map onto default settings before merging pillars
+{% do defaults.redis.update(os_map) %}
+
+{% set redis = salt['pillar.get']( 'redis', default=defaults.redis, merge=True) %}

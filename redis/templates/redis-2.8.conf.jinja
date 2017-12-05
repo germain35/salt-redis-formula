@@ -1,0 +1,147 @@
+# Redis config
+{%- from "redis/map.jinja" import redis with context %}
+daemonize {{ redis.daemonize }}
+
+pidfile {{ redis.pid_file }}
+port {{ redis.port }}
+
+{%- if redis.bind is defined %}
+bind {{ redis.bind }}
+{%- endif %}
+
+{%- if redis.unixsocket is defined %}
+unixsocket {{ redis.unixsocket }}
+unixsocketperm {{ redis.unixsocketperm }}
+{%- endif %}
+
+{%- if redis.tcp_backlog is defined and redis.tcp_backlog > 0 %}
+tcp-backlog {{ redis.tcp_backlog }}
+{%- endif %}
+tcp-keepalive {{ redis.tcp_keepalive }}
+
+loglevel {{ redis.loglevel }}
+
+{%- if redis.syslog is defined %}
+syslog-enabled yes
+syslog-ident {{ redis.syslog.ident }}
+syslog-facility {{ redis.syslog.facility }}
+{%- if redis.syslog.nologfile is defined %}
+logfile ""
+{%- else %}
+logfile {{ redis.log_file }}
+{%- endif %}
+{%- else %}
+logfile {{ redis.log_file }}
+{%- endif %}
+
+databases {{ redis.database_count }}
+
+{%- for s in redis.snapshots %}
+save {{ s }}
+{%- endfor %}
+
+stop-writes-on-bgsave-error {{ redis.stop_writes_on_bgsave_error }}
+
+rdbcompression {{ redis.rdbcompression }}
+rdbchecksum {{ redis.rdbchecksum }}
+
+dbfilename {{ redis.dbfilename }}
+dir {{ redis.root_dir }}
+
+{%- if redis.slaveof is defined %}
+slaveof {{ redis.slaveof.masterip }} {{ redis.slaveof.masterport }}
+{%- endif %}
+
+{%- if redis.masterauth is defined %}
+masterauth {{ redis.masterauth }}
+{%- endif %}
+
+slave-serve-stale-data {{ redis.slave_serve_stale_data }}
+slave-read-only {{ redis.slave_read_only }}
+
+{%- if redis.repl_ping_slave_period is defined %}
+repl-ping-slave-period {{ redis.repl_ping_slave_period }}
+{%- endif %}
+
+{%- if redis.repl_timeout is defined %}
+repl-timeout {{ redis.repl_timeout }}
+{%- endif %}
+
+repl-disable-tcp-nodelay {{ redis.repl_disable_tcp_nodelay }}
+
+{%- if redis.repl_backlog_size is defined %}
+repl-backlog-size {{ redis.repl_backlog_size }}
+{%- endif %}
+
+{%- if redis.repl_backlog_ttl is defined %}
+repl-backlog-ttl {{ redis.repl_backlog_ttl }}
+{%- endif %}
+
+slave-priority {{ redis.slave_priority }}
+
+{%- if redis.min_slaves_to_write is defined %}
+min-slaves-to-write {{ redis.min_slaves_to_write }}
+{%- endif %}
+
+{%- if redis.min_slaves_max_lag is defined %}
+min-slaves-max-lag {{ redis.min_slaves_max_lag }}
+{%- endif %}
+
+{%- if redis.pass is defined %}
+requirepass {{ redis.pass }}
+{%- endif %}
+
+{%- if redis.rename_command is defined %}
+{%- for k, v in redis.rename_command.items() %}
+rename-command {{ k }} {{ v }}
+{%- endfor %}
+{%- endif %}
+
+{%- if redis.maxclients is defined %}
+maxclients {{ redis.maxclients }}
+{%- endif %}
+
+{%- if redis.maxmemory is defined %}
+maxmemory {{ redis.maxmemory }}
+maxmemory-policy {{ redis.maxmemory_policy }}
+maxmemory-samples {{ redis.maxmemory_samples }}
+{%- endif %}
+
+appendonly {{ redis.appendonly }}
+appendfilename {{ redis.appendfilename }}
+appendfsync {{ redis.appendfsync }}
+
+no-appendfsync-on-rewrite {{ redis.no_appendfsync_on_rewrite }}
+auto-aof-rewrite-percentage {{ redis.auto_aof_rewrite_percentage }}
+
+auto-aof-rewrite-min-size {{ redis.auto_aof_rewrite_min_size }}
+
+lua-time-limit {{ redis.lua_time_limit }}
+
+slowlog-log-slower-than {{ redis.slowlog_log_slower_than }}
+slowlog-max-len {{ redis.slowlog_max_len }}
+
+notify-keyspace-events {{ redis.notify_keyspace_events }}
+
+############################### ADVANCED CONFIG ###############################
+
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+
+list-max-ziplist-entries 512
+list-max-ziplist-value 64
+
+set-max-intset-entries 512
+
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+
+activerehashing yes
+
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit slave 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+
+hz 10
+
+aof-rewrite-incremental-fsync yes
