@@ -17,7 +17,7 @@ redis_config_{{ redis.config_version }}:
     - watch_in:
       - service: redis_service
 
-{% if redis.overcommit_memory %}
+{% if redis.config.overcommit_memory %}
 redis_overcommit_memory:
   sysctl.present:
     - name: vm.overcommit_memory
