@@ -2,7 +2,7 @@
 {%- from "redis/map.jinja" import redis with context %}
 daemonize {{ redis.config.daemonize }}
 
-pidfile {{ redis.config.pid_file }}
+pidfile {{ redis.pid_file }}
 port {{ redis.config.port }}
 
 {%- if redis.config.bind is defined %}
@@ -32,10 +32,10 @@ syslog-facility {{ redis.config.syslog.facility }}
 {%- if redis.config.syslog.nologfile is defined %}
 logfile ""
 {%- else %}
-logfile {{ redis.config.log_file }}
+logfile {{ redis.log_file }}
 {%- endif %}
 {%- else %}
-logfile {{ redis.config.log_file }}
+logfile {{ redis.log_file }}
 {%- endif %}
 
 databases {{ redis.config.database_count }}
