@@ -9,7 +9,7 @@ redis_config_{{ redis.config_version }}:
     - name: {{ redis.config_file }}
     - template: jinja
     - source: salt://redis/templates/redis-{{ redis.config_version }}.conf.jinja
-    - user: root
+    - user: {{ redis.user }}
     - group: root
     - mode: 0640
     - require:

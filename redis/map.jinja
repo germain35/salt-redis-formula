@@ -8,6 +8,8 @@
     'Debian': {
         'pkg': 'redis-server',
         'service': 'redis-server',
+        'user': 'redis',
+        'group': 'redis',
         'config_file': '/etc/redis/redis.conf',
         'config_version': salt['grains.filter_by']({
             'jessie': '2.8',
@@ -21,6 +23,8 @@
     'RedHat': {
         'pkg': 'redis',
         'service': 'redis',
+        'user': 'redis',
+        'group': 'redis',
         'config_file': '/etc/redis.conf',
         'config_version': salt['grains.filter_by']({
             'CentOS-6': '3.0',
