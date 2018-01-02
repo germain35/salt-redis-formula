@@ -11,7 +11,7 @@ redis_config_{{ redis.config_version }}:
     - source: salt://redis/templates/redis-{{ redis.config_version }}.conf.jinja
     - user: root
     - group: root
-    - mode: 0644
+    - mode: 0640
     - require:
       - pkg: redis_package
     - watch_in:

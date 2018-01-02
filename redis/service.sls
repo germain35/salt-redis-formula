@@ -6,6 +6,7 @@ include:
 redis_service:
   service.running:
     - name: {{ redis.service }}
-    - enabled: True
+    - enabled: {{ redis.service_enabled }}
+    - reload: {{ redis.service_reload }}
     - require:
       - pkg: redis_package
