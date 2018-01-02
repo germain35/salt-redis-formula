@@ -1,6 +1,8 @@
 redis:
   service_enabled: True
   service_reload: False
+  sysctl:
+    net.core.somaxconn: 1024
   config:
     appendfilename: '"appendonly.aof"'
     appendonly: 'no'

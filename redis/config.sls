@@ -17,11 +17,22 @@ redis_config_{{ redis.config_version }}:
     - watch_in:
       - service: redis_service
 
+{%- for k, v in redis.get('sysctl', {}).iteritems() %}
+redis_sysctl_{{ k }}:
+  sysctl.present:
+    - name: {{ k }}
+    - value: {{ v }}
+    - watch_in:
+      - service: redis_service
+{%- endfor %}
+
 {% if redis.config.overcommit_memory %}
-redis_overcommit_memory:
+redis_sysctl_overcommit_memory:
   sysctl.present:
     - name: vm.overcommit_memory
     - value: 1
     - watch_in:
       - service: redis_service
 {% endif %}
+
+
