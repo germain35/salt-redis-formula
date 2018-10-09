@@ -4,6 +4,8 @@ redis:
   sysctl:
     net.core.somaxconn: 1024
   config:
+    always-show-logo: 'yes'
+    aof-use-rdb-preamble: 'no'
     appendfilename: '"appendonly.aof"'
     appendonly: 'no'
     appendfsync: everysec
@@ -19,6 +21,9 @@ redis:
     group: redis
     home: /var/lib/redis
     latency_monitor_threshold: 0
+    lazyfree-lazy-eviction: 'no'
+    lazyfree-lazy-expire: 'no'
+    lazyfree-lazy-server-del: 'no'
     loglevel: notice
     lua_time_limit: 5000
     maxmemory_policy: volatile-lru
@@ -33,10 +38,11 @@ redis:
     slave_read_only: 'yes'
     repl_diskless_sync: 'no'
     repl_diskless_sync_delay: 5
+    slave-lazy-flush: 'no'
     slave_serve_stale_data: 'yes'
     slowlog_max_len: 128
     slowlog_log_slower_than: 10000
-    snapshots: 
+    snapshots:
       - 900 1
       - 300 10
       - 60 10000
@@ -46,4 +52,4 @@ redis:
     tcp_keepalive: 0
     unixsocketperm: 755
     user: redis
-    overcommit_memory: False 
+    overcommit_memory: False

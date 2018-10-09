@@ -34,6 +34,8 @@ logfile {{ redis.log_file }}
 logfile {{ redis.log_file }}
 {%- endif %}
 
+always-show-logo {{ redis.config.get('always-show-logo') }}
+
 databases {{ redis.config.database_count }}
 
 {%- for s in redis.config.snapshots %}
@@ -107,6 +109,11 @@ maxmemory-policy {{ redis.config.maxmemory_policy }}
 maxmemory-samples {{ redis.config.maxmemory_samples }}
 {%- endif %}
 
+lazyfree-lazy-eviction {{ redis.config.get('lazyfree-lazy-eviction') }}
+lazyfree-lazy-expire {{ redis.config.get('lazyfree-lazy-expire') }}
+lazyfree-lazy-server-del {{ redis.config.get('lazyfree-lazy-server-del') }}
+slave-lazy-flush {{ redis.config.get('slave-lazy-flush') }}
+
 appendonly {{ redis.config.appendonly }}
 appendfilename {{ redis.config.appendfilename }}
 appendfsync {{ redis.config.appendfsync }}
@@ -122,6 +129,8 @@ slowlog-log-slower-than {{ redis.config.slowlog_log_slower_than }}
 slowlog-max-len {{ redis.config.slowlog_max_len }}
 
 notify-keyspace-events {{ redis.config.notify_keyspace_events }}
+
+aof-use-rdb-preamble {{ redis.config.get('aof-use-rdb-preamble') }}
 
 ############################### ADVANCED CONFIG ###############################
 
